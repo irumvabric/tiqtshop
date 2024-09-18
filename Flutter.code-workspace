@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../namer_app"
+		},
+		{
+			"path": "../counter"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}

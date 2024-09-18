@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tiqtshop/screens/Home.dart';
+import 'package:tiqtshop/screens/login.dart';
+import 'package:tiqtshop/route.dart';
+import 'package:tiqtshop/widgets/Barcode_scanner_simple.dart';
+
+
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runApp(const MyApp());
@@ -11,23 +18,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text("TiqtShop"),
-            ),
-            body: Builder(builder: (context) {
-              return Material(
-                  child: ElevatedButton(
-                      onPressed: () {
-                        _qrBarCodeScannerDialogPlugin.getScannedQrBarCode(
-                            context: context,
-                            onCode: (code) {
-                              setState(() {
-                                this.code = code;
-                              });
-                            });
-                      },
-                      child: Text("Click me")));
-            })));
+      title: 'TiqtShop',
+      debugShowCheckedModeBanner: false,
+
+        initialRoute: '/Home',
+        onGenerateRoute: (route) => onGeneratedRoute(route),
+        navigatorKey: navigatorKey,      
+        theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: LoginPage(),
+    );
   }
 }
