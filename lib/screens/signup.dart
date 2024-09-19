@@ -8,6 +8,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+
+  String? _selectedValue;
+  final List<String> _items = ['female','male'];
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
@@ -156,6 +163,60 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
+                controller: _usernameController,
+                decoration: InputDecoration(labelText: 'Username'),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your username';
+                  }
+                  return null;
+                },
+              ),
+
+
+              TextFormField(
+                controller: _firstNameController,
+                decoration: InputDecoration(labelText: 'First name'),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your First name';
+                  }
+                  return null;
+                },
+              ),
+
+              TextFormField(
+                controller: _lastNameController,
+                decoration: InputDecoration(labelText: 'Last name'),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your Last name';
+                  }
+                  return null;
+                },
+              ),
+
+              DropdownButton<String>(
+                  hint: Text('Select an option'),
+                  value: _selectedValue,
+                  items: _items.map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(item),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedValue = newValue;
+            });
+          },
+        ),
+
+
+              TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
@@ -166,6 +227,8 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
+
+
               SizedBox(height: 16),
               TextFormField(
                 controller: _passwordController,
@@ -207,6 +270,10 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     }
+  }
+
+  void _signUp() async{
+
   }
 
   @override
