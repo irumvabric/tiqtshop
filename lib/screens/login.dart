@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiqtshop/backend/auth.dart';
+import 'package:tiqtshop/screens/signup.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -182,6 +183,23 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: _login,
                 child: Text('Login'),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Navigate to Sign Up page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUpPage()),
+                  );
+                },
+                child: Text(
+                  "Don't have an account? Sign Up",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    decoration:
+                        TextDecoration.underline, // Underline for a link look
+                  ),
+                ),
               ),
             ],
           ),

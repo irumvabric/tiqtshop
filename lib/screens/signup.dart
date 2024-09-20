@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:tiqtshop/backend/auth.dart';
+import 'package:tiqtshop/backend/signup.dart';
+import 'package:tiqtshop/screens/login.dart';
 
-class LoginPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
 
   String? _selectedValue;
-  final List<String> _items = ['female','male'];
+  final List<String> _items = ['female', 'male'];
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -173,8 +175,6 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
-
-
               TextFormField(
                 controller: _firstNameController,
                 decoration: InputDecoration(labelText: 'First name'),
@@ -186,7 +186,6 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
-
               TextFormField(
                 controller: _lastNameController,
                 decoration: InputDecoration(labelText: 'Last name'),
@@ -198,24 +197,21 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
-
               DropdownButton<String>(
-                  hint: Text('Select an option'),
-                  value: _selectedValue,
-                  items: _items.map((String item) {
-                    return DropdownMenuItem<String>(
-                      value: item,
-                      child: Text(item),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      _selectedValue = newValue;
-            });
-          },
-        ),
-
-
+                hint: Text('Select an option'),
+                value: _selectedValue,
+                items: _items.map((String item) {
+                  return DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  setState(() {
+                    _selectedValue = newValue;
+                  });
+                },
+              ),
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(labelText: 'Email'),
@@ -227,8 +223,6 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
-
-
               SizedBox(height: 16),
               TextFormField(
                 controller: _passwordController,
@@ -243,8 +237,25 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: _login,
+                onPressed: signUp(),
                 child: Text('Login'),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Navigate to Sign Up page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                child: Text(
+                  "Do you have an account? Sign in",
+                  style: TextStyle(
+                    color: Colors.blue,
+                    decoration:
+                        TextDecoration.underline, // Underline for a link look
+                  ),
+                ),
               ),
             ],
           ),
@@ -253,33 +264,37 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _login() async {
+  void _signup() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await _authService.authenticateUser(
-            _emailController.text, _passwordController.text);
-        // Navigate to home page or show success message
+        await _authService.signUp(
+            _usernameController.text,
+            _emailController.text,
+            _passwordController.text,
+            _firstNameController.text,
+            _lastNameController.text,
+            null?._selectedValue.text);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login successful')),
+          SnackBar(content: Text('Sign up successful')),
         );
         // Navigate to home page
         // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${e.toString()}')),
+          SnackBar(content: Text('Sign Up failed: ${e.toString()}')),
         );
       }
     }
   }
 
-  void _signUp() async{
-
-  }
-
   @override
   void dispose() {
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    null?._selectedValue.dispose();
     super.dispose();
   }
 }
