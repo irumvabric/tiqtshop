@@ -20,8 +20,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     Center(child: Text("Home Page")),
     Barcode_scanner(),
-    VerificationPage(),
-    VerificationPage(),
+    // ProfileEditPage(title: "Edit Page"),
+    // ProfilePage(title: "Profile Page"),
   ];
 
   // Function to handle BottomNavigationBar item taps
@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _pages[_selectedIndex], // Display the current selected page
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped, 
+        onTap: _onItemTapped,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

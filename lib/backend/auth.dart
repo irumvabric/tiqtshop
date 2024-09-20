@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:tiqtshop/main.dart';
 import 'package:tiqtshop/screens/Home.dart';
@@ -28,8 +29,9 @@ class AuthService {
       );
 
       if (response.statusCode == 202) {
+        String token = response.data['token'];
         Navigator.pushNamed(ctx, "/screens/Home");
-        print('Login successful: ${response.data}');
+        print('Login successful: ${response.data['token']}');
       } else {
         throw Exception('Login failed');
       }
@@ -50,16 +52,16 @@ class AuthService {
       final response = await _dio.post(
         '/users',
         data: {
+          'first_name': firstName,
+          'last_name': lastName,
+          'email': email,
           'username': username,
-          'email': firstName,
-          'first_name': email,
-          'password': lastName,
-          'last_name': password,
+          'password': password,
           'gender': gender,
         },
       );
 
-      if (response.statusCode == 404) {
+      if (response.statusCode == 400) {
         print('Sign up successful');
         Navigator.pushNamed(ctx, "/screens/Home");
       } else {
@@ -69,6 +71,47 @@ class AuthService {
     } on DioError catch (e) {
       print('Error: ${e.response?.statusCode}, ${e.message}');
       throw Exception('Sign up failed: ${e.message}');
+    }
+  }
+
+  Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('auth_token', token);
+  }
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('auth_token');
+  }
+
+  Future<Map<String, dynamic>?> getUserInfo() async {
+    String? token = await getToken(); // Fetch the token
+    if (token == null) {
+      print('Token not found');
+      return null;
+    }
+
+    try {
+      // Make a request to the user information endpoint
+      Response response = await _dio.get(
+        'https://api.tiqtshop.kubwacu.com/users/me',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        // Parse and return the user information
+        return response.data;
+      } else {
+        print('Failed to fetch user info: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching user info: $e');
+      return null;
     }
   }
 }
