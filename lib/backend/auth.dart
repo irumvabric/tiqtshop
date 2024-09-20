@@ -51,15 +51,15 @@ class AuthService {
         '/users',
         data: {
           'username': username,
-          'email': email,
-          'first_name': firstName,
-          'password': password,
-          'last_name': lastName,
+          'email': firstName,
+          'first_name': email,
+          'password': lastName,
+          'last_name': password,
           'gender': gender,
         },
       );
 
-      if (response.statusCode == 202) {
+      if (response.statusCode == 404) {
         print('Sign up successful');
         Navigator.pushNamed(ctx, "/screens/Home");
       } else {
