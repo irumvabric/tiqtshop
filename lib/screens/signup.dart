@@ -237,8 +237,8 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: signUp(),
-                child: Text('Login'),
+                onPressed: _signup,
+                child: Text('Sign up'),
               ),
               GestureDetector(
                 onTap: () {
@@ -273,7 +273,7 @@ class _SignUpPageState extends State<SignUpPage> {
             _passwordController.text,
             _firstNameController.text,
             _lastNameController.text,
-            null?._selectedValue.text);
+            _selectedValue ?? "");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Sign up successful')),
         );
@@ -294,7 +294,6 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
-    null?._selectedValue.dispose();
     super.dispose();
   }
 }

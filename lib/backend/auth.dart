@@ -44,17 +44,17 @@ class AuthService {
     }
   }
 
-  Future<void> signUp(String username, String firstName, String lastName, 
-                      String email, String password, String gender) async {
+  Future<void> signUp(String username, String firstName, String lastName,
+      String email, String password, String gender) async {
     try {
       final response = await _dio.post(
         '/users',
         data: {
           'username': username,
-          'first_name': firstName,
-          'last_name': lastName,
           'email': email,
+          'first_name': firstName,
           'password': password,
+          'last_name': lastName,
           'gender': gender,
         },
       );
