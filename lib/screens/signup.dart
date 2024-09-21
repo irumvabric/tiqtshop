@@ -14,8 +14,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
 
-  String? _selectedValue;
-  final List<String> _items = ['female', 'male'];
+  // final String _selectedValue;
+  // final List<String> _items = ['female', 'male'];
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -197,21 +197,21 @@ class _SignUpPageState extends State<SignUpPage> {
                   return null;
                 },
               ),
-              DropdownButton<String>(
-                hint: Text('Select an option'),
-                value: _selectedValue,
-                items: _items.map((String item) {
-                  return DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  setState(() {
-                    _selectedValue = newValue;
-                  });
-                },
-              ),
+              // DropdownButton<String>(
+              //   hint: Text('Select an option'),
+              //   value: _selectedValue,
+              //   items: _items.map((String item) {
+              //     return DropdownMenuItem<String>(
+              //       value: item,
+              //       child: Text(item),
+              //     );
+              //   }).toList(),
+              //   onChanged: (newValue) {
+              //     setState(() {
+              //       _selectedValue = newValue;
+              //     });
+              //   },
+              // ),
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(labelText: 'Email'),
@@ -237,8 +237,8 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               SizedBox(height: 24),
               ElevatedButton(
-                onPressed: signUp(),
-                child: Text('Login'),
+                onPressed: _signup,
+                child: Text('Sign up'),
               ),
               GestureDetector(
                 onTap: () {
@@ -273,7 +273,7 @@ class _SignUpPageState extends State<SignUpPage> {
             _passwordController.text,
             _firstNameController.text,
             _lastNameController.text,
-            null?._selectedValue.text);
+            "");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Sign up successful')),
         );
@@ -294,7 +294,6 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
-    null?._selectedValue.dispose();
     super.dispose();
   }
 }
